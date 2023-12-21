@@ -1,38 +1,43 @@
-import { Button, StyleSheet, Text, View, TextInput } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  ScrollView,
+  FlatList,
+} from "react-native";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import TaskItem from "./components/TaskItem";
+import TaskInput from "./components/TaskInput";
 
 export default function App() {
-  const [enteredTask, setEnteredTask] = useState("");
   const [taskList, setTaskList] = useState([]);
 
-  function taskInputHandler(enteredText) {
-    setEnteredTask(enteredText);
-  }
-
-  function addTaskHandler() {
-    setTaskList((prev) => [...prev, enteredTask]);
-    setEnteredTask("");
+  function addTaskHandler(enteredTask) {
+    setTaskList((prev) => [
+      ...prev,
+      { id: uuidv4().toString(), task: enteredTask },
+    ]);
   }
 
   return (
     <View style={styles.appContainer}>
+      <TaskInput add={addTaskHandler} />
       <View style={styles.taskContainer}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="New Task"
-          onChangeText={taskInputHandler}
-          value={enteredTask}
+        <Text style={styles.taskListTitle} add={addTaskHandler}>
+          My Tasks
+        </Text>
+        <FlatList
+          data={taskList}
+          renderItem={(taskData) => {
+            return <TaskItem text={taskData.item} />;
+          }}
+          keyExtractor={(item) => {
+            return item.id;
+          }}
         />
-        <Button title="Add Task" onPress={addTaskHandler} />
-      </View>
-      <View style={styles.listContainer}>
-        <Text style={styles.listTitle}>My Tasks</Text>
-        <View>
-          {taskList.map((task) => {
-            return <Text key={uuidv4()}>{task}</Text>;
-          })}
-        </View>
       </View>
     </View>
   );
@@ -44,7 +49,7 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingHorizontal: 16,
   },
-  taskContainer: {
+  inputContainer: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -53,17 +58,20 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#cccc",
   },
-  textInput: {
+  userInput: {
     borderWidth: 1,
     borderColor: "#cccc",
     width: "70%",
     padding: 8,
   },
-  listContainer: {
+  taskContainer: {
+    flex: 5,
+  },
+  taskContainer: {
     flex: 3,
     marginTop: 16,
   },
-  listTitle: {
+  taskListTitle: {
     textAlign: "center",
   },
 });
