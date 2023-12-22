@@ -1,4 +1,4 @@
-import { StyleSheet, View, TextInput, Button } from "react-native";
+import { StyleSheet, View, TextInput, Button, Modal } from "react-native";
 import { useState } from "react";
 
 export default function TaskInput(props) {
@@ -9,29 +9,35 @@ export default function TaskInput(props) {
   }
 
   return (
-    <View style={styles.inputContainer}>
-      <TextInput
-        style={styles.userInput}
-        placeholder="New Task"
-        onChangeText={taskInputHandler}
-        value={enteredTask}
-      />
-      <Button
-        title="Add Task"
-        onPress={() => {
-          props.onAddTask(enteredTask);
-          setEnteredTask("");
-        }}
-      />
-    </View>
+    <Modal visible={props.isVisible} animationType="slide">
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.userInput}
+          placeholder="New Task"
+          onChangeText={taskInputHandler}
+          value={enteredTask}
+        />
+        <View>
+          <Button
+            title="Add Task"
+            onPress={() => {
+              props.onAddTask(enteredTask);
+              setEnteredTask("");
+            }}
+          />
+          <Button title="Cancel" onPress={props.onClose} />
+        </View>
+      </View>
+    </Modal>
   );
 }
 
 const styles = StyleSheet.create({
   inputContainer: {
+    flex: 1,
     paddingVertical: 24,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
   },
   userInput: {
