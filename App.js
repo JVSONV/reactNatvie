@@ -22,9 +22,13 @@ export default function App() {
     ]);
   }
 
+  function onDeleteHandler(id) {
+    setTaskList((prev) => prev.filter((task) => task.id !== id));
+  }
+
   return (
     <View style={styles.appContainer}>
-      <TaskInput add={addTaskHandler} />
+      <TaskInput onAddTask={addTaskHandler} />
       <View style={styles.taskContainer}>
         <Text style={styles.taskListTitle} add={addTaskHandler}>
           My Tasks
@@ -32,7 +36,13 @@ export default function App() {
         <FlatList
           data={taskList}
           renderItem={(taskData) => {
-            return <TaskItem text={taskData.item} />;
+            return (
+              <TaskItem
+                text={taskData.item}
+                onPressTask={onDeleteHandler}
+                id={taskData.item.id}
+              />
+            );
           }}
           keyExtractor={(item) => {
             return item.id;
@@ -49,29 +59,14 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingHorizontal: 16,
   },
-  inputContainer: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingBottom: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: "#cccc",
-  },
-  userInput: {
-    borderWidth: 1,
-    borderColor: "#cccc",
-    width: "70%",
-    padding: 8,
-  },
-  taskContainer: {
-    flex: 5,
-  },
   taskContainer: {
     flex: 3,
     marginTop: 16,
+    borderColor: "red",
+    borderWidth: 2,
   },
   taskListTitle: {
     textAlign: "center",
+    fontSize: 24,
   },
 });

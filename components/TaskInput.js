@@ -19,7 +19,7 @@ export default function TaskInput(props) {
       <Button
         title="Add Task"
         onPress={() => {
-          props.add(enteredTask);
+          props.onAddTask(enteredTask);
           setEnteredTask("");
         }}
       />
@@ -29,13 +29,10 @@ export default function TaskInput(props) {
 
 const styles = StyleSheet.create({
   inputContainer: {
-    flex: 1,
+    paddingVertical: 24,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingBottom: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: "#cccc",
   },
   userInput: {
     borderWidth: 1,

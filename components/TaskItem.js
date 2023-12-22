@@ -1,10 +1,12 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Pressable } from "react-native";
 
 export default function TaskItem(props) {
   return (
-    <View style={styles.taskItem}>
-      <Text style={styles.taskItemText}>{props.text.task}</Text>
-    </View>
+    <Pressable onPress={props.onPressTask.bind(this, props.id)} >
+      <View style={styles.taskItem}>
+        <Text style={styles.taskItemText}>{props.text.task}</Text>
+      </View>
+    </Pressable>
   );
 }
 
