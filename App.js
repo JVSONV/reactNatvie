@@ -3,6 +3,7 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import TaskItem from "./components/TaskItem";
 import TaskInput from "./components/TaskInput";
+import { StatusBar } from "expo-status-bar";
 
 export default function App() {
   const [taskList, setTaskList] = useState([]);
@@ -25,47 +26,50 @@ export default function App() {
   }
 
   return (
-    <View style={styles.appContainer}>
-      {!isModalOpen && (
-        <View style={styles.buttonContainer}>
-          <Pressable onPress={() => onShowModalHandler()}>
-            <Text style={styles.modalButton}>+</Text>
-          </Pressable>
-        </View>
-      )}
-      <TaskInput
-        onAddTask={addTaskHandler}
-        onClose={onShowModalHandler}
-        isVisible={isModalOpen}
-      />
-      <View style={styles.taskContainer}>
-        <Text style={styles.taskListTitle} add={addTaskHandler}>
-          My Tasks
-        </Text>
-        <FlatList
-          data={taskList}
-          renderItem={(taskData) => {
-            return (
-              <TaskItem
-                text={taskData.item}
-                onPressTask={onDeleteHandler}
-                id={taskData.item.id}
-              />
-            );
-          }}
-          keyExtractor={(item) => {
-            return item.id;
-          }}
+    <>
+      <StatusBar style="light"/>
+      <View style={styles.appContainer}>
+        {!isModalOpen && (
+          <View style={styles.buttonContainer}>
+            <Pressable onPress={() => onShowModalHandler()}>
+              <Text style={styles.modalButton}>Add A New Task</Text>
+            </Pressable>
+          </View>
+        )}
+        <TaskInput
+          onAddTask={addTaskHandler}
+          onClose={onShowModalHandler}
+          isVisible={isModalOpen}
         />
+        <View style={styles.taskContainer}>
+          <Text style={styles.taskListTitle} add={addTaskHandler}>
+            My Tasks
+          </Text>
+          <FlatList
+            data={taskList}
+            renderItem={(taskData) => {
+              return (
+                <TaskItem
+                  text={taskData.item}
+                  onPressTask={onDeleteHandler}
+                  id={taskData.item.id}
+                />
+              );
+            }}
+            keyExtractor={(item) => {
+              return item.id;
+            }}
+          />
+        </View>
       </View>
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
-    paddingTop: 50,
+    paddingTop: 80,
     paddingHorizontal: 16,
   },
   taskContainer: {
@@ -75,18 +79,19 @@ const styles = StyleSheet.create({
   taskListTitle: {
     textAlign: "center",
     fontSize: 24,
+    color: "#b4a0e5"
   },
   buttonContainer: {
-    height: 40,
-    width: 40,
-    borderRadius: 50,
+    borderRadius: 6,
     backgroundColor: "#B4A0E5",
     textAlign: "center",
     justifyContent: "center",
-    alignItems: "center"
+    alignContent: "center",
   },
   modalButton: {
-    fontSize: 32,
+    fontSize: 24,
     textAlign: "center",
+    padding: 0,
+    margin: 0,
   },
 });
